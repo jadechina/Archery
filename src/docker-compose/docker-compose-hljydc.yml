@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  goinception:
+    image: hanchuanchuan/goinception
+    container_name: goinception
+    restart: always
+    ports:
+      - "14000:4000"
+    volumes:
+      - "./inception/config.toml:/etc/config.toml"
+
+  archery:
+    image: hhyo/archery:latest
+    container_name: archery
+    restart: always
+    ports:
+      - "19123:9123"
+    volumes:
+      - "./archery/settings.py:/opt/archery/local_settings.py"
+      - "./archery/soar.yaml:/etc/soar.yaml"
+      - "./archery/docs.md:/opt/archery/docs/docs.md"
+      - "./archery/downloads:/opt/archery/downloads"
+      - "./archery/sql/migrations:/opt/archery/sql/migrations"
+      - "./archery/logs:/opt/archery/logs"
+      - "./archery/keys:/opt/archery/keys"
+    entrypoint: "bash /opt/archery/src/docker/startup.sh"
+    environment:
+      NGINX_PORT: 9123
+      DEBUG: "false"
+      DATABASE_URL: "mysql://archery:aSt8f_s1B9H4@10.153.0.2:3306/archery"
+      CACHE_URL: "redis://10.153.1.9:33065/9?PASSWORD=Hl#dckkj908t"
+      CSRF_TRUSTED_ORIGINS: "http://0.0.0.0:9123"
+      ENABLE_LDAP: "false"
+      AUTH_LDAP_ALWAYS_UPDATE_USER: "true"
+      AUTH_LDAP_USER_ATTR_MAP: "username=cn,display=displayname,email=email"
+      Q_CLUISTER_WORKERS: 4
+      Q_CLUISTER_TIMEOUT: 60
+      Q_CLUISTER_SYNC: "false"
+      CUSTOM_TITLE_SUFFIX: ""
+
+
