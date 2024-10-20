@@ -38,5 +38,3 @@ services:
       Q_CLUISTER_TIMEOUT: 60
       Q_CLUISTER_SYNC: "false"
       CUSTOM_TITLE_SUFFIX: ""
-
-
